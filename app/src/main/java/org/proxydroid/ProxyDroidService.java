@@ -291,22 +291,6 @@ public class ProxyDroidService extends Service {
         return true;
     }
 
-    private void initSoundVibrateLights(NotificationCompat.Builder builder) {
-        final String ringtone = settings.getString("settings_key_notif_ringtone", null);
-        AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-        if (audioManager.getStreamVolume(AudioManager.STREAM_RING) == 0) {
-            builder.setSound(null);
-        } else if (ringtone != null) {
-            builder.setSound(Uri.parse(ringtone));
-        }
-
-        if (settings.getBoolean("settings_key_notif_vibrate", false)) {
-            builder.setVibrate(new long[]{0, 1000, 500, 1000, 500, 1000});
-        }
-
-//    notification.defaults |= Notification.DEFAULT_LIGHTS;
-    }
-
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -324,8 +308,6 @@ public class ProxyDroidService extends Service {
 
     private void notifyAlert(String title, String info) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Service");
-
-        initSoundVibrateLights(builder);
 
         builder.setAutoCancel(false);
         builder.setTicker(title);
